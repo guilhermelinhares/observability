@@ -40,4 +40,10 @@
       --for=condition=ready pod \
       --selector=app.kubernetes.io/component=controller \
       --timeout=90s
-    
+  
+
+### Initialize Project
+`tofu init`
+
+### Run project
+`tofu apply`
