@@ -1,0 +1,39 @@
+---
+apiVersion: opentelemetry.io/v1alpha1
+kind: OpenTelemetryCollector
+metadata:
+  name: otel-collector-daemonset
+  namespace: monitoring
+spec:
+  mode: daemonset
+  config: |
+    receivers:
+      # Make sure to add the otlp receiver.
+      # This will open up the receiver on port 4317
+      otlp:
+        protocols:
+          grpc:
+            endpoint: "0.0.0.0:4317"
+          http:
+            endpoint: "0.0.0.0:4318"  
+    processors:
+    extensions:
+      health_check: {}
+    exporters:
+      otlp:
+        endpoint: jaegertracing-collector.monitoring.svc.cluster.local:4317
+        tls:
+          insecure: true
+      otlphttp/prometheus-monitoring:
+        endpoint: "http://prometheus-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090/api/v1/write"
+    service:
+      extensions: [health_check]
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: []
+          exporters: [otlp]
+        metrics:
+          receivers: [otlp]
+          processors: []
+          exporters: [otlphttp/prometheus-monitoring]

@@ -1,0 +1,8 @@
+daemonset:
+  # -- Deploys Promtail as a DaemonSet
+  enabled: false
+
+deployment:
+  # -- Deploys Promtail as a Deployment
+  enabled: true
+  replicaCount: 1

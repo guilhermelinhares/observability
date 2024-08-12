@@ -1,0 +1,14 @@
+prometheus:
+  url: http://prometheus-kube-prometheus-prometheus.${namespace}.svc.cluster.local
+  port: 9090
+  path: ""
+rules:
+  default: false
+  external:
+  - seriesQuery: '{__name__=~"^some_metric_count$"}'
+    resources:
+      template: <<.Resource>>
+    name:
+      matches: ""
+      as: "my_external_metric"
+    metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>}) by (<<.GroupBy>>)
