@@ -12,6 +12,13 @@ module "grafana-loki" {
   depends_on = [kubernetes_namespace.monitoring_namespace]
 }
 
+module "grafana-promtail" {
+  source                   = "./modules/grafana-promtail"
+
+  monitoring_namespace     = var.monitoring_namespace
+  depends_on = [kubernetes_namespace.monitoring_namespace]
+}
+
 module "jaeger" {
   source                   = "./modules/jaeger"
 

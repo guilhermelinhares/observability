@@ -1,8 +1,48 @@
-daemonset:
-  # -- Deploys Promtail as a DaemonSet
-  enabled: false
-
-deployment:
-  # -- Deploys Promtail as a Deployment
+config:
+  # -- The config of clients of the Promtail server
+  # Must be reference in `config.file` to configure `clients`
+  # @default -- See `values.yaml`
+  clients:
+    - url: http://grafana-loki-gateway:80/loki/api/v1/push
+  # serverPort: 8080
+  # -- The config to enable tracing
+  enableTracing: false
+ 
+# ServiceMonitor configuration
+serviceMonitor:
+  # -- If enabled, ServiceMonitor resources for Prometheus Operator are created
   enabled: true
-  replicaCount: 1
+  # -- Prometheus rules will be deployed for alerting purposes
+  # prometheusRule:
+  #   enabled: true
+  #   additionalLabels:
+  #     prometheus: service-prometheus
+  #     role: alert-rules
+  #     app: kube-prometheus-stack
+  #     release: prometheus
+  #   namespace: ${namespace}
+  #   rules:
+  #    - alert: PromtailRequestErrors
+  #      expr: 100 * sum(rate(promtail_request_duration_seconds_count{status_code=~"5..|failed"}[1m])) by (namespace, job, route, instance) / sum(rate(promtail_request_duration_seconds_count[1m])) by (namespace, job, route, instance) > 10
+  #      for: 5m
+  #      labels:
+  #        severity: critical
+  #      annotations:
+  #        description: |
+  #          The {{ $labels.job }} {{ $labels.route }} is experiencing
+  #          {{ printf \"%.2f\" $value }} errors.
+  #          VALUE = {{ $value }}
+  #          LABELS = {{ $labels }}
+  #        summary: Promtail request errors (instance {{ $labels.instance }})
+  #    - alert: PromtailRequestLatency
+  #      expr: histogram_quantile(0.99, sum(rate(promtail_request_duration_seconds_bucket[5m])) by (le)) > 1
+  #      for: 5m
+  #      labels:
+  #        severity: critical
+  #      annotations:
+  #        summary: Promtail request latency (instance {{ $labels.instance }})
+  #        description: |
+  #          The {{ $labels.job }} {{ $labels.route }} is experiencing
+  #          {{ printf \"%.2f\" $value }}s 99th percentile latency.
+  #          VALUE = {{ $value }}
+  #          LABELS = {{ $labels }}
