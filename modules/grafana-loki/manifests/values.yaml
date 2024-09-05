@@ -162,8 +162,6 @@ gateway:
     - name: TZ
       value: America/Fortaleza
   # -- Node selector for write pods
-  # nodeSelector:
-  #   node-role.kubernetes.io/worker: worker
   # Gateway ingress configuration
   # ingress:
   #   # -- Specifies whether an ingress for the gateway should be created
@@ -210,8 +208,6 @@ write:
     - name: TZ
       value: America/Fortaleza
   # -- Node selector for write pods
-  # nodeSelector:
-  #   node-role.kubernetes.io/worker: worker
   persistence:
     # -- Enable volume claims in pod spec
     volumeClaimsEnabled: true
@@ -251,9 +247,6 @@ read:
   extraEnv:
     - name: TZ
       value: America/Fortaleza
-  # -- Node selector for write pods
-  nodeSelector:
-    node-role.kubernetes.io/worker: worker
   persistence:
     # -- Enable StatefulSetAutoDeletePVC feature
     enableStatefulSetAutoDeletePVC: true
@@ -296,9 +289,6 @@ backend:
   extraVolumes:
     - name: data
       emptyDir: {}
-  # -- Node selector for write pods
-  # nodeSelector:
-  #   node-role.kubernetes.io/worker: worker
   persistence:
     # -- Enable volume claims in pod spec
     volumeClaimsEnabled: true
@@ -327,15 +317,6 @@ minio:
   # https://docs.min.io/docs/minio-erasure-code-quickstart-guide
   # Since we only have 1 replica, that means 2 drives must be used.
   drivesPerNode: 1
-  # affinity:
-  #   nodeAffinity:
-  #     requiredDuringSchedulingIgnoredDuringExecution:
-  #       nodeSelectorTerms:
-  #         - matchExpressions:
-  #             - key: node-role.kubernetes.io/worker
-  #               operator: In
-  #               values:
-  #                 - "worker"
   buckets:
   - name: chunks
     policy: none

@@ -19,16 +19,16 @@ module "grafana-promtail" {
   depends_on = [kubernetes_namespace.monitoring_namespace]
 }
 
-module "jaeger" {
-  source                   = "./modules/jaeger"
+# module "jaeger" {
+#   source                   = "./modules/jaeger"
 
-  monitoring_namespace     = var.monitoring_namespace
-  depends_on = [kubernetes_namespace.monitoring_namespace]
-}
+#   monitoring_namespace     = var.monitoring_namespace
+#   depends_on = [kubernetes_namespace.monitoring_namespace]
+# }
 
-module "opentelemetry" {
-  source                   = "./modules/opentelemetry"
+# module "opentelemetry" {
+#   source                   = "./modules/opentelemetry"
 
-  monitoring_namespace     = var.monitoring_namespace
-  depends_on = [kubernetes_namespace.monitoring_namespace]
-}
+#   monitoring_namespace     = var.monitoring_namespace
+#   depends_on = [kubernetes_namespace.monitoring_namespace]
+# }
